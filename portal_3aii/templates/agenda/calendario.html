@@ -1,0 +1,693 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Agenda & Tarefas - Portal 3AII{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <div>
+                <h1 style="font-size: 32px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px;">Agenda & Tarefas</h1>
+                <p style="font-size: 16px; color: var(--text-secondary); margin: 0;">Gerencie suas atividades e compromissos escolares</p>
+            </div>
+            <div class="d-flex gap-3">
+                <div class="btn-group" role="group">
+                    <input type="radio" class="btn-check" name="view-mode" id="kanban-view" checked>
+                    <label class="btn btn-outline-primary" for="kanban-view">
+                        <i class="fas fa-columns me-2"></i>Kanban
+                    </label>
+                    
+                    <input type="radio" class="btn-check" name="view-mode" id="calendar-view">
+                    <label class="btn btn-outline-primary" for="calendar-view">
+                        <i class="fas fa-calendar me-2"></i>Calendário
+                    </label>
+                </div>
+                <button class="btn btn-primary" onclick="adicionarTarefa()" style="padding: 12px 24px; border-radius: 12px; font-weight: 600;">
+                    <i class="fas fa-plus me-2"></i>Nova Tarefa
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Kanban Board -->
+<div id="kanban-board" class="row">
+    <div class="col-md-4 mb-4">
+        <div class="kanban-column" style="background: var(--bg-secondary); border-radius: 16px; padding: 20px; min-height: 600px;">
+            <div class="d-flex align-items-center mb-3">
+                <div style="width: 12px; height: 12px; background: #ef4444; border-radius: 50%; margin-right: 12px;"></div>
+                <h5 style="margin: 0; font-weight: 600; color: var(--text-primary);">A Fazer</h5>
+                <span class="badge bg-light text-dark ms-auto" id="todo-count">{{ tarefas_a_fazer|length }}</span>
+            </div>
+            <div class="kanban-tasks" id="todo-tasks" ondrop="drop(event, 'todo')" ondragover="allowDrop(event)">
+                {% for tarefa in tarefas_a_fazer %}
+                <div class="task-card" draggable="true" ondragstart="drag(event)" data-id="{{ tarefa.id }}" data-status="todo">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <span class="badge" style="background: {{ tarefa.cor }}; color: white; font-size: 11px;">{{ tarefa.materia }}</span>
+                        <div class="dropdown">
+                            <button class="btn btn-sm" type="button" data-bs-toggle="dropdown" style="color: var(--text-secondary);">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#" onclick="editarTarefa('{{ tarefa.id }}')">
+                                    <i class="fas fa-edit me-2"></i>Editar
+                                </a></li>
+                                <li><a class="dropdown-item text-danger" href="#" onclick="excluirTarefa('{{ tarefa.id }}')">
+                                    <i class="fas fa-trash me-2"></i>Excluir
+                                </a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <h6 style="margin-bottom: 8px; font-weight: 600; color: var(--text-primary);">{{ tarefa.titulo }}</h6>
+                    <p style="margin-bottom: 12px; font-size: 14px; color: var(--text-secondary); line-height: 1.4;">{{ tarefa.descricao }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small style="color: var(--text-secondary);">
+                            <i class="fas fa-calendar-alt me-1"></i>{{ tarefa.prazo|date:"d/m/Y" }}
+                        </small>
+                        <div class="priority-indicator priority-{{ tarefa.prioridade }}"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="kanban-column" style="background: var(--bg-secondary); border-radius: 16px; padding: 20px; min-height: 600px;">
+            <div class="d-flex align-items-center mb-3">
+                <div style="width: 12px; height: 12px; background: #f59e0b; border-radius: 50%; margin-right: 12px;"></div>
+                <h5 style="margin: 0; font-weight: 600; color: var(--text-primary);">Em Progresso</h5>
+                <span class="badge bg-light text-dark ms-auto" id="progress-count">{{ tarefas_em_progresso|length }}</span>
+            </div>
+            <div class="kanban-tasks" id="progress-tasks" ondrop="drop(event, 'progress')" ondragover="allowDrop(event)">
+                {% for tarefa in tarefas_em_progresso %}
+                <div class="task-card" draggable="true" ondragstart="drag(event)" data-id="{{ tarefa.id }}" data-status="progress">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <span class="badge" style="background: {{ tarefa.cor }}; color: white; font-size: 11px;">{{ tarefa.materia }}</span>
+                        <div class="dropdown">
+                            <button class="btn btn-sm" type="button" data-bs-toggle="dropdown" style="color: var(--text-secondary);">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#" onclick="editarTarefa('{{ tarefa.id }}')">
+                                    <i class="fas fa-edit me-2"></i>Editar
+                                </a></li>
+                                <li><a class="dropdown-item text-danger" href="#" onclick="excluirTarefa('{{ tarefa.id }}')">
+                                    <i class="fas fa-trash me-2"></i>Excluir
+                                </a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <h6 style="margin-bottom: 8px; font-weight: 600; color: var(--text-primary);">{{ tarefa.titulo }}</h6>
+                    <p style="margin-bottom: 12px; font-size: 14px; color: var(--text-secondary); line-height: 1.4;">{{ tarefa.descricao }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small style="color: var(--text-secondary);">
+                            <i class="fas fa-calendar-alt me-1"></i>{{ tarefa.prazo|date:"d/m/Y" }}
+                        </small>
+                        <div class="priority-indicator priority-{{ tarefa.prioridade }}"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-4">
+        <div class="kanban-column" style="background: var(--bg-secondary); border-radius: 16px; padding: 20px; min-height: 600px;">
+            <div class="d-flex align-items-center mb-3">
+                <div style="width: 12px; height: 12px; background: #22c55e; border-radius: 50%; margin-right: 12px;"></div>
+                <h5 style="margin: 0; font-weight: 600; color: var(--text-primary);">Concluído</h5>
+                <span class="badge bg-light text-dark ms-auto" id="done-count">{{ tarefas_concluidas|length }}</span>
+            </div>
+            <div class="kanban-tasks" id="done-tasks" ondrop="drop(event, 'done')" ondragover="allowDrop(event)">
+                {% for tarefa in tarefas_concluidas %}
+                <div class="task-card completed" draggable="true" ondragstart="drag(event)" data-id="{{ tarefa.id }}" data-status="done">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <span class="badge" style="background: {{ tarefa.cor }}; color: white; font-size: 11px;">{{ tarefa.materia }}</span>
+                        <div class="dropdown">
+                            <button class="btn btn-sm" type="button" data-bs-toggle="dropdown" style="color: var(--text-secondary);">
+                                <i class="fas fa-ellipsis-v"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="#" onclick="editarTarefa('{{ tarefa.id }}')">
+                                    <i class="fas fa-edit me-2"></i>Editar
+                                </a></li>
+                                <li><a class="dropdown-item text-danger" href="#" onclick="excluirTarefa('{{ tarefa.id }}')">
+                                    <i class="fas fa-trash me-2"></i>Excluir
+                                </a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <h6 style="margin-bottom: 8px; font-weight: 600; color: var(--text-primary); text-decoration: line-through; opacity: 0.7;">{{ tarefa.titulo }}</h6>
+                    <p style="margin-bottom: 12px; font-size: 14px; color: var(--text-secondary); line-height: 1.4; opacity: 0.7;">{{ tarefa.descricao }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small style="color: var(--text-secondary);">
+                            <i class="fas fa-check me-1"></i>Concluído
+                        </small>
+                        <div class="priority-indicator priority-{{ tarefa.prioridade }}"></div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Estatísticas -->
+<div class="row mb-5">
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stats-card">
+            <div class="stats-icon bg-primary">
+                <i class="fas fa-tasks"></i>
+            </div>
+            <h3>{{ estatisticas.total_tarefas }}</h3>
+            <p>Total de Tarefas</p>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stats-card">
+            <div class="stats-icon bg-warning">
+                <i class="fas fa-clock"></i>
+            </div>
+            <h3>{{ estatisticas.tarefas_pendentes }}</h3>
+            <p>Pendentes</p>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stats-card">
+            <div class="stats-icon bg-success">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3>{{ estatisticas.tarefas_concluidas }}</h3>
+            <p>Concluídas</p>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stats-card">
+            <div class="stats-icon bg-info">
+                <i class="fas fa-calendar-alt"></i>
+            </div>
+            <h3>{{ estatisticas.proximos_eventos }}</h3>
+            <p>Próximos Eventos</p>
+        </div>
+    </div>
+</div>
+
+<!-- Conteúdo Principal -->
+<div class="row">
+    <!-- Tarefas -->
+    <div class="col-lg-8">
+        <div class="content-card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h6>Minhas Tarefas</h6>
+                <div>
+                    <button class="btn btn-sm btn-outline-primary me-2">
+                        <i class="fas fa-filter me-1"></i>Filtrar
+                    </button>
+                    <button class="btn btn-sm btn-primary">
+                        <i class="fas fa-plus me-1"></i>Adicionar
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                {% for tarefa in tarefas %}
+                <div class="task-item d-flex align-items-center justify-content-between p-3 mb-3" style="border: 1px solid #f1f5f9; border-radius: 12px; background: white;">
+                    <div class="d-flex align-items-center">
+                        <div class="task-priority me-3" style="width: 4px; height: 50px; background: {{ tarefa.cor }}; border-radius: 2px;"></div>
+                        <div>
+                            <h6 style="margin: 0; font-weight: 600; color: var(--text-primary);">{{ tarefa.titulo }}</h6>
+                            <p style="margin: 0.25rem 0; color: var(--text-secondary); font-size: 14px;">{{ tarefa.descricao }}</p>
+                            <small style="color: var(--text-secondary);">
+                                <i class="fas fa-book me-1"></i>{{ tarefa.disciplina }}
+                                <i class="fas fa-calendar ms-3 me-1"></i>{{ tarefa.data_entrega|date:"d/m/Y" }}
+                            </small>
+                        </div>
+                    </div>
+                    <div class="task-actions d-flex align-items-center">
+                        {% if tarefa.status == 'pendente' %}
+                            <span class="badge bg-danger me-3">Pendente</span>
+                        {% elif tarefa.status == 'em_progresso' %}
+                            <span class="badge bg-warning me-3">Em Progresso</span>
+                        {% else %}
+                            <span class="badge bg-success me-3">Concluída</span>
+                        {% endif %}
+                        
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-outline-secondary">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Calendário e Eventos -->
+    <div class="col-lg-4">
+        <!-- Calendário Mini -->
+        <div class="content-card mb-4">
+            <div class="card-header">
+                <h6>Calendário</h6>
+            </div>
+            <div class="card-body">
+                <div class="mini-calendar">
+                    <div class="calendar-header d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="mb-0">Outubro 2025</h6>
+                        <div>
+                            <button class="btn btn-sm btn-link p-0 me-2">&lt;</button>
+                            <button class="btn btn-sm btn-link p-0">&gt;</button>
+                        </div>
+                    </div>
+                    <div class="calendar-grid">
+                        <div class="calendar-days">
+                            <span class="day-header">Dom</span>
+                            <span class="day-header">Seg</span>
+                            <span class="day-header">Ter</span>
+                            <span class="day-header">Qua</span>
+                            <span class="day-header">Qui</span>
+                            <span class="day-header">Sex</span>
+                            <span class="day-header">Sáb</span>
+                        </div>
+                        <div class="calendar-dates">
+                            <span class="date">29</span>
+                            <span class="date">30</span>
+                            <span class="date active">1</span>
+                            <span class="date">2</span>
+                            <span class="date">3</span>
+                            <span class="date">4</span>
+                            <span class="date">5</span>
+                            <span class="date">6</span>
+                            <span class="date">7</span>
+                            <span class="date">8</span>
+                            <span class="date">9</span>
+                            <span class="date">10</span>
+                            <span class="date">11</span>
+                            <span class="date">12</span>
+                            <span class="date">13</span>
+                            <span class="date">14</span>
+                            <span class="date">15</span>
+                            <span class="date">16</span>
+                            <span class="date">17</span>
+                            <span class="date">18</span>
+                            <span class="date">19</span>
+                            <span class="date">20</span>
+                            <span class="date">21</span>
+                            <span class="date">22</span>
+                            <span class="date">23</span>
+                            <span class="date">24</span>
+                            <span class="date">25</span>
+                            <span class="date">26</span>
+                            <span class="date">27</span>
+                            <span class="date">28</span>
+                            <span class="date">29</span>
+                            <span class="date">30</span>
+                            <span class="date">31</span>
+                            <span class="date">1</span>
+                            <span class="date">2</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Próximos Eventos -->
+        <div class="content-card">
+            <div class="card-header">
+                <h6>Próximos Eventos</h6>
+            </div>
+            <div class="card-body">
+                {% for evento in eventos %}
+                <div class="event-item d-flex align-items-center mb-3">
+                    <div class="event-date text-white rounded text-center me-3" style="width: 50px; height: 50px; display: flex; flex-direction: column; justify-content: center; background: {{ evento.cor }}; font-size: 12px;">
+                        <span class="day" style="font-weight: 700;">{{ evento.data.day }}</span>
+                        <span class="month" style="font-size: 10px;">{{ evento.data|date:"M" }}</span>
+                    </div>
+                    <div>
+                        <h6 style="margin: 0; font-weight: 600;">{{ evento.titulo }}</h6>
+                        <small style="color: var(--text-secondary);">
+                            <i class="fas fa-clock me-1"></i>{{ evento.data|date:"H:i" }}
+                            <span class="ms-2">{{ evento.disciplina }}</span>
+                        </small>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Nova Tarefa -->
+<div class="modal fade" id="taskModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content" style="border-radius: 16px; border: none;">
+            <div class="modal-header" style="border-bottom: 1px solid var(--border-light);">
+                <h5 class="modal-title" id="taskModalTitle">Nova Tarefa</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="taskForm">
+                    <div class="mb-3">
+                        <label for="taskTitle" class="form-label">Título</label>
+                        <input type="text" class="form-control" id="taskTitle" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="taskDescription" class="form-label">Descrição</label>
+                        <textarea class="form-control" id="taskDescription" rows="3"></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="taskSubject" class="form-label">Matéria</label>
+                            <select class="form-select" id="taskSubject">
+                                <option value="">Selecione...</option>
+                                <option value="Matemática">Matemática</option>
+                                <option value="Português">Português</option>
+                                <option value="Física">Física</option>
+                                <option value="Química">Química</option>
+                                <option value="História">História</option>
+                                <option value="Geografia">Geografia</option>
+                                <option value="Biologia">Biologia</option>
+                                <option value="Inglês">Inglês</option>
+                                <option value="Educação Física">Educação Física</option>
+                                <option value="Artes">Artes</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="taskPriority" class="form-label">Prioridade</label>
+                            <select class="form-select" id="taskPriority">
+                                <option value="baixa">Baixa</option>
+                                <option value="media" selected>Média</option>
+                                <option value="alta">Alta</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <label for="taskDate" class="form-label">Data de Entrega</label>
+                        <input type="date" class="form-control" id="taskDate" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer" style="border-top: 1px solid var(--border-light);">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" onclick="salvarTarefa()">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.task-card {
+    background: var(--bg-primary);
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    cursor: move;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.task-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transform: translateY(-2px);
+}
+
+.task-card.dragging {
+    opacity: 0.5;
+    transform: rotate(5deg);
+}
+
+.kanban-tasks {
+    min-height: 500px;
+}
+
+.kanban-tasks.drag-over {
+    background: rgba(99, 102, 241, 0.1);
+    border: 2px dashed var(--primary-color);
+    border-radius: 12px;
+}
+
+.priority-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.priority-baixa {
+    background: #22c55e;
+}
+
+.priority-media {
+    background: #f59e0b;
+}
+
+.priority-alta {
+    background: #ef4444;
+}
+
+.completed {
+    opacity: 0.8;
+}
+
+.completed .task-card {
+    background: rgba(34, 197, 94, 0.1);
+}
+
+.btn-check:checked + .btn-outline-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+#calendar-view-content {
+    display: none;
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+</style>
+
+<script>
+let draggedTask = null;
+let taskIdCounter = 100;
+
+// Simulação de dados para tarefas
+let tasks = [
+    {
+        id: 1,
+        titulo: 'Relatório de Física',
+        descricao: 'Experimento sobre movimento retilíneo uniforme',
+        materia: 'Física',
+        cor: '#f59e0b',
+        prioridade: 'alta',
+        prazo: '2024-12-10',
+        status: 'todo'
+    },
+    {
+        id: 2,
+        titulo: 'Lista de Matemática',
+        descricao: 'Exercícios de derivadas e integrais',
+        materia: 'Matemática',
+        cor: '#6366f1',
+        prioridade: 'media',
+        prazo: '2024-12-08',
+        status: 'progress'
+    },
+    {
+        id: 3,
+        titulo: 'Redação ENEM',
+        descricao: 'Tema: Desafios da educação no Brasil',
+        materia: 'Português',
+        cor: '#22c55e',
+        prioridade: 'alta',
+        prazo: '2024-12-05',
+        status: 'done'
+    }
+];
+
+// Toggle entre visualizações
+document.getElementById('kanban-view').addEventListener('change', function() {
+    if (this.checked) {
+        document.getElementById('kanban-board').style.display = 'block';
+        document.getElementById('calendar-view-content').style.display = 'none';
+    }
+});
+
+document.getElementById('calendar-view').addEventListener('change', function() {
+    if (this.checked) {
+        document.getElementById('kanban-board').style.display = 'none';
+        document.getElementById('calendar-view-content').style.display = 'block';
+    }
+});
+
+// Funções de Drag and Drop
+function allowDrop(ev) {
+    ev.preventDefault();
+    ev.currentTarget.classList.add('drag-over');
+}
+
+function drag(ev) {
+    draggedTask = ev.target;
+    ev.target.classList.add('dragging');
+}
+
+function drop(ev, newStatus) {
+    ev.preventDefault();
+    ev.currentTarget.classList.remove('drag-over');
+    
+    if (draggedTask) {
+        const taskId = draggedTask.getAttribute('data-id');
+        const oldStatus = draggedTask.getAttribute('data-status');
+        
+        if (oldStatus !== newStatus) {
+            // Move o card visualmente
+            ev.currentTarget.appendChild(draggedTask);
+            draggedTask.setAttribute('data-status', newStatus);
+            
+            // Atualiza os contadores
+            atualizarContadores();
+            
+            // Aqui você faria a requisição AJAX para atualizar no backend
+            console.log(`Tarefa ${taskId} movida de ${oldStatus} para ${newStatus}`);
+        }
+        
+        draggedTask.classList.remove('dragging');
+        draggedTask = null;
+    }
+}
+
+// Gerenciamento de tarefas
+function adicionarTarefa() {
+    document.getElementById('taskModalTitle').textContent = 'Nova Tarefa';
+    document.getElementById('taskForm').reset();
+    new bootstrap.Modal(document.getElementById('taskModal')).show();
+}
+
+function editarTarefa(taskId) {
+    // Implementar edição
+    console.log('Editando tarefa:', taskId);
+}
+
+function excluirTarefa(taskId) {
+    if (confirm('Tem certeza que deseja excluir esta tarefa?')) {
+        const taskElement = document.querySelector(`[data-id="${taskId}"]`);
+        if (taskElement) {
+            taskElement.remove();
+            atualizarContadores();
+        }
+    }
+}
+
+function salvarTarefa() {
+    const titulo = document.getElementById('taskTitle').value;
+    const descricao = document.getElementById('taskDescription').value;
+    const materia = document.getElementById('taskSubject').value;
+    const prioridade = document.getElementById('taskPriority').value;
+    const prazo = document.getElementById('taskDate').value;
+    
+    if (!titulo || !prazo) {
+        alert('Por favor, preencha os campos obrigatórios.');
+        return;
+    }
+    
+    const novaTarefa = {
+        id: ++taskIdCounter,
+        titulo,
+        descricao,
+        materia,
+        prioridade,
+        prazo,
+        status: 'todo'
+    };
+    
+    adicionarTarefaAoBoard(novaTarefa);
+    bootstrap.Modal.getInstance(document.getElementById('taskModal')).hide();
+}
+
+function adicionarTarefaAoBoard(tarefa) {
+    const coresMateria = {
+        'Matemática': '#6366f1',
+        'Português': '#22c55e',
+        'Física': '#f59e0b',
+        'Química': '#3b82f6',
+        'História': '#8b5cf6',
+        'Geografia': '#06b6d4',
+        'Biologia': '#10b981',
+        'Inglês': '#f43f5e',
+        'Educação Física': '#84cc16',
+        'Artes': '#f97316'
+    };
+    
+    const cor = coresMateria[tarefa.materia] || '#6b7280';
+    const dataFormatada = new Date(tarefa.prazo).toLocaleDateString('pt-BR');
+    
+    const taskHTML = `
+        <div class="task-card fade-in" draggable="true" ondragstart="drag(event)" data-id="${tarefa.id}" data-status="${tarefa.status}">
+            <div class="d-flex justify-content-between align-items-start mb-2">
+                <span class="badge" style="background: ${cor}; color: white; font-size: 11px;">${tarefa.materia}</span>
+                <div class="dropdown">
+                    <button class="btn btn-sm" type="button" data-bs-toggle="dropdown" style="color: var(--text-secondary);">
+                        <i class="fas fa-ellipsis-v"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#" onclick="editarTarefa('${tarefa.id}')">
+                            <i class="fas fa-edit me-2"></i>Editar
+                        </a></li>
+                        <li><a class="dropdown-item text-danger" href="#" onclick="excluirTarefa('${tarefa.id}')">
+                            <i class="fas fa-trash me-2"></i>Excluir
+                        </a></li>
+                    </ul>
+                </div>
+            </div>
+            <h6 style="margin-bottom: 8px; font-weight: 600; color: var(--text-primary);">${tarefa.titulo}</h6>
+            <p style="margin-bottom: 12px; font-size: 14px; color: var(--text-secondary); line-height: 1.4;">${tarefa.descricao}</p>
+            <div class="d-flex justify-content-between align-items-center">
+                <small style="color: var(--text-secondary);">
+                    <i class="fas fa-calendar-alt me-1"></i>${dataFormatada}
+                </small>
+                <div class="priority-indicator priority-${tarefa.prioridade}"></div>
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('todo-tasks').insertAdjacentHTML('beforeend', taskHTML);
+    atualizarContadores();
+}
+
+function atualizarContadores() {
+    const todoCount = document.querySelectorAll('#todo-tasks .task-card').length;
+    const progressCount = document.querySelectorAll('#progress-tasks .task-card').length;
+    const doneCount = document.querySelectorAll('#done-tasks .task-card').length;
+    
+    document.getElementById('todo-count').textContent = todoCount;
+    document.getElementById('progress-count').textContent = progressCount;
+    document.getElementById('done-count').textContent = doneCount;
+}
+
+// Remover classe drag-over quando não estiver mais fazendo drag
+document.addEventListener('dragend', function() {
+    document.querySelectorAll('.drag-over').forEach(el => {
+        el.classList.remove('drag-over');
+    });
+});
+
+// Inicializar contadores
+document.addEventListener('DOMContentLoaded', function() {
+    atualizarContadores();
+});
+</script>
+{% endblock %}

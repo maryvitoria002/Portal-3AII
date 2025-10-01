@@ -1,0 +1,48 @@
+<!-- SVG do gatinho computador -->
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+  <!-- Corpo do gato -->
+  <ellipse cx="60" cy="70" rx="25" ry="20" fill="#FFB366"/>
+  
+  <!-- Cabeça -->
+  <circle cx="60" cy="45" r="20" fill="#FFB366"/>
+  
+  <!-- Orelhas -->
+  <polygon points="45,30 50,15 55,30" fill="#FFB366"/>
+  <polygon points="65,30 70,15 75,30" fill="#FFB366"/>
+  <polygon points="47,28 50,20 53,28" fill="#FF9E4F"/>
+  <polygon points="67,28 70,20 73,28" fill="#FF9E4F"/>
+  
+  <!-- Olhos -->
+  <ellipse cx="55" cy="42" rx="3" ry="4" fill="#000"/>
+  <ellipse cx="65" cy="42" rx="3" ry="4" fill="#000"/>
+  <circle cx="55" cy="41" r="1" fill="#FFF"/>
+  <circle cx="65" cy="41" r="1" fill="#FFF"/>
+  
+  <!-- Nariz -->
+  <polygon points="60,47 58,50 62,50" fill="#FF6B9D"/>
+  
+  <!-- Boca -->
+  <path d="M 58 52 Q 60 54 62 52" stroke="#000" stroke-width="1" fill="none"/>
+  
+  <!-- Bigodes -->
+  <line x1="45" y1="48" x2="35" y2="47" stroke="#000" stroke-width="1"/>
+  <line x1="45" y1="52" x2="35" y2="53" stroke="#000" stroke-width="1"/>
+  <line x1="75" y1="48" x2="85" y2="47" stroke="#000" stroke-width="1"/>
+  <line x1="75" y1="52" x2="85" y2="53" stroke="#000" stroke-width="1"/>
+  
+  <!-- Patas -->
+  <ellipse cx="50" cy="85" rx="5" ry="8" fill="#FFB366"/>
+  <ellipse cx="70" cy="85" rx="5" ry="8" fill="#FFB366"/>
+  
+  <!-- Computador/Laptop -->
+  <rect x="35" y="95" width="50" height="3" fill="#4A5568"/>
+  <rect x="37" y="85" width="46" height="12" fill="#2D3748" rx="2"/>
+  <rect x="39" y="87" width="42" height="8" fill="#68D391"/>
+  
+  <!-- Tela do computador -->
+  <rect x="41" y="88" width="38" height="6" fill="#000"/>
+  <text x="60" y="92" text-anchor="middle" fill="#00FF00" font-family="monospace" font-size="4">3AII</text>
+  
+  <!-- Cauda -->
+  <path d="M 35 75 Q 20 70 25 55" stroke="#FFB366" stroke-width="8" fill="none" stroke-linecap="round"/>
+</svg>

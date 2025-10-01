@@ -1,0 +1,229 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Campus - Portal 3AII{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <div>
+                <h1 style="font-size: 32px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px;">Vida no Campus</h1>
+                <p style="font-size: 16px; color: var(--text-secondary); margin: 0;">Fique por dentro de tudo que acontece na escola</p>
+            </div>
+            <button class="btn btn-primary" style="padding: 12px 24px; border-radius: 12px; font-weight: 600;">
+                <i class="fas fa-bullhorn me-2"></i>Publicar Notícia
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Estatísticas -->
+<div class="row mb-5">
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stats-card">
+            <div class="stats-icon bg-primary">
+                <i class="fas fa-newspaper"></i>
+            </div>
+            <h3>{{ total_noticias }}</h3>
+            <p>Notícias Recentes</p>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stats-card">
+            <div class="stats-icon bg-success">
+                <i class="fas fa-calendar-check"></i>
+            </div>
+            <h3>{{ total_eventos }}</h3>
+            <p>Próximos Eventos</p>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stats-card">
+            <div class="stats-icon bg-info">
+                <i class="fas fa-users"></i>
+            </div>
+            <h3>850</h3>
+            <p>Alunos Matriculados</p>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stats-card">
+            <div class="stats-icon bg-warning">
+                <i class="fas fa-trophy"></i>
+            </div>
+            <h3>12</h3>
+            <p>Premiações 2025</p>
+        </div>
+    </div>
+</div>
+
+<!-- Conteúdo Principal -->
+<div class="row">
+    <!-- Notícias -->
+    <div class="col-lg-8">
+        <div class="content-card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h6>Notícias e Comunicados</h6>
+                <a href="#" class="text-primary small" style="font-weight: 500;">Ver todas</a>
+            </div>
+            <div class="card-body">
+                {% for noticia in noticias %}
+                <article class="news-item p-3 mb-3" style="border: 1px solid #f1f5f9; border-radius: 12px; background: white; transition: all 0.3s ease;">
+                    <div class="d-flex align-items-start">
+                        <div class="news-category me-3" style="width: 4px; height: 60px; border-radius: 2px; flex-shrink: 0; background: {{ noticia.cor }};"></div>
+                        <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <span class="badge" style="background: #f0f9ff; color: #0284c7; font-weight: 500; padding: 0.4rem 0.8rem; border-radius: 6px;">
+                                    {{ noticia.categoria }}
+                                </span>
+                                <small style="color: var(--text-secondary);">
+                                    <i class="fas fa-calendar me-1"></i>{{ noticia.data }}
+                                </small>
+                            </div>
+                            <h6 style="font-weight: 700; color: var(--text-primary); margin-bottom: 0.5rem;">
+                                {{ noticia.titulo }}
+                            </h6>
+                            <p style="color: var(--text-secondary); margin-bottom: 1rem; line-height: 1.5;">
+                                {{ noticia.resumo }}
+                            </p>
+                            <div class="news-actions">
+                                <button class="btn btn-sm btn-primary" style="border-radius: 8px; font-weight: 500;">
+                                    <i class="fas fa-arrow-right me-1"></i>Ler mais
+                                </button>
+                                <button class="btn btn-sm btn-outline-secondary ms-2" style="border-radius: 8px;">
+                                    <i class="fas fa-share"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Galeria de Fotos -->
+        <div class="content-card">
+            <div class="card-header">
+                <h6>Galeria de Momentos</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="gallery-item" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); height: 150px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; transition: all 0.3s ease;">
+                            <div class="text-center">
+                                <i class="fas fa-camera fa-2x mb-2"></i>
+                                <p class="mb-0">Feira de Ciências</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="gallery-item" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); height: 150px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; transition: all 0.3s ease;">
+                            <div class="text-center">
+                                <i class="fas fa-graduation-cap fa-2x mb-2"></i>
+                                <p class="mb-0">Formatura 2024</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="gallery-item" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); height: 150px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; cursor: pointer; transition: all 0.3s ease;">
+                            <div class="text-center">
+                                <i class="fas fa-running fa-2x mb-2"></i>
+                                <p class="mb-0">Jogos Internos</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+        <!-- Próximos Eventos -->
+        <div class="content-card mb-4">
+            <div class="card-header">
+                <h6>Próximos Eventos</h6>
+            </div>
+            <div class="card-body">
+                {% for evento in eventos %}
+                <div class="event-item d-flex align-items-center p-3 mb-3" style="background: #f8fafc; border-radius: 12px;">
+                    <div class="event-icon me-3" style="width: 48px; height: 48px; background: var(--primary-color); border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white;">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div>
+                        <h6 style="margin: 0; font-weight: 600; color: var(--text-primary); font-size: 14px;">{{ evento.nome }}</h6>
+                        <small style="color: var(--text-secondary);">
+                            <i class="fas fa-clock me-1"></i>{{ evento.data }} às {{ evento.horario }}
+                        </small>
+                        <br>
+                        <small style="color: var(--text-secondary);">
+                            <i class="fas fa-map-marker-alt me-1"></i>{{ evento.local }}
+                        </small>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <!-- Links Úteis -->
+        <div class="content-card mb-4">
+            <div class="card-header">
+                <h6>Links Úteis</h6>
+            </div>
+            <div class="card-body">
+                <div class="useful-links">
+                    <a href="#" class="link-item d-flex align-items-center p-2 mb-2" style="text-decoration: none; border-radius: 8px; transition: all 0.3s ease; color: var(--text-primary);">
+                        <i class="fas fa-book me-3" style="color: var(--primary-color);"></i>
+                        <span>Biblioteca Digital</span>
+                    </a>
+                    <a href="#" class="link-item d-flex align-items-center p-2 mb-2" style="text-decoration: none; border-radius: 8px; transition: all 0.3s ease; color: var(--text-primary);">
+                        <i class="fas fa-utensils me-3" style="color: var(--success-color);"></i>
+                        <span>Cardápio da Cantina</span>
+                    </a>
+                    <a href="#" class="link-item d-flex align-items-center p-2 mb-2" style="text-decoration: none; border-radius: 8px; transition: all 0.3s ease; color: var(--text-primary);">
+                        <i class="fas fa-bus me-3" style="color: var(--warning-color);"></i>
+                        <span>Horários do Transporte</span>
+                    </a>
+                    <a href="#" class="link-item d-flex align-items-center p-2 mb-2" style="text-decoration: none; border-radius: 8px; transition: all 0.3s ease; color: var(--text-primary);">
+                        <i class="fas fa-phone me-3" style="color: var(--info-color);"></i>
+                        <span>Contatos Importantes</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Destaque -->
+        <div class="content-card">
+            <div class="card-body text-center p-4" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-radius: 16px;">
+                <i class="fas fa-star fa-3x mb-3"></i>
+                <h5 style="font-weight: 700;">Turma 3AII</h5>
+                <p style="margin-bottom: 1.5rem; opacity: 0.9;">Uma das melhores turmas do ensino médio!</p>
+                <button class="btn btn-light" style="border-radius: 10px; font-weight: 600;">
+                    Ver Conquistas
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.news-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.gallery-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+}
+
+.link-item:hover {
+    background: #f1f5f9;
+    transform: translateX(4px);
+}
+</style>
+{% endblock %}

@@ -1,0 +1,877 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Notas & Médias - Portal 3AII{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <div>
+                <h1 style="font-size: 32px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px;">Boletim Escolar</h1>
+                <p style="font-size: 16px; color: var(--text-secondary); margin: 0;">Acompanhe suas notas e desempenho na turma 3AII</p>
+            </div>
+            <button class="btn btn-primary" style="padding: 12px 24px; border-radius: 12px; font-weight: 600;">
+                <i class="fas fa-download me-2"></i>Baixar Boletim
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Estatísticas Gerais -->
+<div class="row mb-5">
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stats-card">
+            <div class="stats-icon bg-primary">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <h3>{{ estatisticas.media_geral }}</h3>
+            <p>Média Geral</p>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stats-card">
+            <div class="stats-icon bg-success">
+                <i class="fas fa-book"></i>
+            </div>
+            <h3>{{ estatisticas.total_disciplinas }}</h3>
+            <p>Disciplinas</p>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stats-card">
+            <div class="stats-icon bg-warning">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3>{{ estatisticas.disciplinas_aprovado }}</h3>
+            <p>Aprovado em</p>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stats-card">
+            <div class="stats-icon bg-info">
+                <i class="fas fa-user-check"></i>
+            </div>
+            <h3>{{ estatisticas.frequencia }}%</h3>
+            <p>Frequência</p>
+        </div>
+    </div>
+</div>
+
+<!-- Tabela de Notas -->
+<div class="row">
+    <div class="col-12">
+        <div class="content-card">
+            <div class="card-header">
+                <h6>Notas por Disciplina</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr style="background: #f8fafc;">
+                                <th style="font-weight: 600; color: var(--text-primary); padding: 1rem;">Disciplina</th>
+                                <th style="font-weight: 600; color: var(--text-primary); padding: 1rem;">Professor</th>
+                                <th style="font-weight: 600; color: var(--text-primary); padding: 1rem; text-align: center;">1º Semestre</th>                               
+                                <th style="font-weight: 600; color: var(--text-primary); padding: 1rem; text-align: center;">2º Semestre</th>
+                                <th style="font-weight: 600; color: var(--text-primary); padding: 1rem; text-align: center;">Média Anual</th>
+                                <th style="font-weight: 600; color: var(--text-primary); padding: 1rem; text-align: center;">Situação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                <td style="padding: 1rem; vertical-align: middle;">
+                                    <div class="d-flex align-items-center">
+                                        <div class="subject-color me-3" style="width: 4px; height: 40px; background: #6366f1; border-radius: 2px;"></div>
+                                        <div>
+                                            <h6 style="margin: 0; font-weight: 600;">Matemática</h6>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="padding: 1rem; vertical-align: middle; color: var(--text-secondary);">
+                                    Prof. Carlos Silva
+                                </td>
+                                <td style="padding: 1rem; text-align: center; vertical-align: middle;">
+                                    <div class="semester-info">
+                                        <span style="font-weight: 700; font-size: 16px; color: #22c55e;">78.5</span>
+                                        <br><small style="color: #22c55e; font-weight: 600;">Aprovado</small>
+                                    </div>
+                                </td>
+                                <td style="padding: 1rem; text-align: center; vertical-align: middle;">
+                                    <div class="semester-info">
+                                        <span style="font-weight: 600; color: var(--text-secondary);">---</span>
+                                        <br><small style="color: var(--text-secondary);">Cursando</small>
+                                    </div>
+                                </td>
+                                <td style="padding: 1rem; text-align: center; vertical-align: middle;">
+                                    <span style="font-weight: 700; font-size: 18px; color: #6366f1;">78.5</span>
+                                </td>
+                                <td style="padding: 1rem; text-align: center; vertical-align: middle;">
+                                    <span class="badge" style="background: #22c55e15; color: #22c55e; padding: 8px 12px; border-radius: 20px; font-weight: 600;">
+                                        Aprovado 1º Sem
+                                    </span>
+                                </td>
+                            </tr>
+                            
+                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                <td style="padding: 1rem; vertical-align: middle;">
+                                    <div class="d-flex align-items-center">
+                                        <div class="subject-color me-3" style="width: 4px; height: 40px; background: #22c55e; border-radius: 2px;"></div>
+                                        <div>
+                                            <h6 style="margin: 0; font-weight: 600;">Português</h6>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="padding: 1rem; vertical-align: middle; color: var(--text-secondary);">
+                                    Prof.ª Maria Santos
+                                </td>
+                                <td style="padding: 1rem; text-align: center; vertical-align: middle;">
+                                    <div class="semester-info">
+                                        <span style="font-weight: 700; font-size: 16px; color: #22c55e;">82.0</span>
+                                        <br><small style="color: #22c55e; font-weight: 600;">Aprovado</small>
+                                    </div>
+                                </td>
+                                <td style="padding: 1rem; text-align: center; vertical-align: middle;">
+                                    <div class="semester-info">
+                                        <span style="font-weight: 600; color: var(--text-secondary);">---</span>
+                                        <br><small style="color: var(--text-secondary);">Cursando</small>
+                                    </div>
+                                </td>
+                                <td style="padding: 1rem; text-align: center; vertical-align: middle;">
+                                    <span style="font-weight: 700; font-size: 18px; color: #22c55e;">82.0</span>
+                                </td>
+                                <td style="padding: 1rem; text-align: center; vertical-align: middle;">
+                                    <span class="badge" style="background: #22c55e15; color: #22c55e; padding: 8px 12px; border-radius: 20px; font-weight: 600;">
+                                        Aprovado 1º Sem
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                <td style="padding: 1rem; vertical-align: middle;">
+                                    <div class="d-flex align-items-center">
+                                        <div class="subject-color me-3" style="width: 4px; height: 40px; background: #f59e0b; border-radius: 2px;"></div>
+                                        <div>
+                                            <h6 style="margin: 0; font-weight: 600;">Física</h6>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="padding: 1rem; vertical-align: middle; color: var(--text-secondary);">
+                                    Prof. João Oliveira
+                                </td>
+                                <td style="padding: 1rem; text-align: center; vertical-align: middle;">
+                                    <div class="semester-info">
+                                        <span style="font-weight: 700; font-size: 16px; color: #ef4444;">45.5</span>
+                                        <br><small style="color: #ef4444; font-weight: 600;">Paralela</small>
+                                    </div>
+                                </td>
+                                <td style="padding: 1rem; text-align: center; vertical-align: middle;">
+                                    <div class="semester-info">
+                                        <span style="font-weight: 600; color: var(--text-secondary);">---</span>
+                                        <br><small style="color: var(--text-secondary);">Cursando</small>
+                                    </div>
+                                </td>
+                                <td style="padding: 1rem; text-align: center; vertical-align: middle;">
+                                    <span style="font-weight: 700; font-size: 18px; color: #f59e0b;">45.5</span>
+                                </td>
+                                <td style="padding: 1rem; text-align: center; vertical-align: middle;">
+                                    <span class="badge" style="background: #f59e0b15; color: #f59e0b; padding: 8px 12px; border-radius: 20px; font-weight: 600;">
+                                        Direito à Paralela
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                <td style="padding: 1rem; vertical-align: middle;">
+                                    <div class="d-flex align-items-center">
+                                        <div class="subject-color me-3" style="width: 4px; height: 40px; background: #3b82f6; border-radius: 2px;"></div>
+                                        <div>
+                                            <h6 style="margin: 0; font-weight: 600;">Química</h6>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="padding: 1rem; vertical-align: middle; color: var(--text-secondary);">
+                                    Prof.ª Ana Costa
+                                </td>
+                                <td style="padding: 1rem; text-align: center; vertical-align: middle;">
+                                    <div class="semester-info">
+                                        <span style="font-weight: 700; font-size: 16px; color: #22c55e;">71.2</span>
+                                        <br><small style="color: #22c55e; font-weight: 600;">Aprovado</small>
+                                    </div>
+                                </td>
+                                <td style="padding: 1rem; text-align: center; vertical-align: middle;">
+                                    <div class="semester-info">
+                                        <span style="font-weight: 600; color: var(--text-secondary);">---</span>
+                                        <br><small style="color: var(--text-secondary);">Cursando</small>
+                                    </div>
+                                </td>
+                                <td style="padding: 1rem; text-align: center; vertical-align: middle;">
+                                    <span style="font-weight: 700; font-size: 18px; color: #3b82f6;">71.2</span>
+                                </td>
+                                <td style="padding: 1rem; text-align: center; vertical-align: middle;">
+                                    <span class="badge" style="background: #22c55e15; color: #22c55e; padding: 8px 12px; border-radius: 20px; font-weight: 600;">
+                                        Aprovado 1º Sem
+                                    </span>
+                                </td>
+                            </tr>
+
+                            <tr style="border-bottom: 1px solid #f1f5f9;">
+                                <td style="padding: 1rem; vertical-align: middle;">
+                                    <div class="d-flex align-items-center">
+                                        <div class="subject-color me-3" style="width: 4px; height: 40px; background: #8b5cf6; border-radius: 2px;"></div>
+                                        <div>
+                                            <h6 style="margin: 0; font-weight: 600;">História</h6>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td style="padding: 1rem; vertical-align: middle; color: var(--text-secondary);">
+                                    Prof. Pedro Lima
+                                </td>
+                                <td style="padding: 1rem; text-align: center; vertical-align: middle;">
+                                    <div class="semester-info">
+                                        <span style="font-weight: 700; font-size: 16px; color: #22c55e;">89.3</span>
+                                        <br><small style="color: #22c55e; font-weight: 600;">Aprovado</small>
+                                    </div>
+                                </td>
+                                <td style="padding: 1rem; text-align: center; vertical-align: middle;">
+                                    <div class="semester-info">
+                                        <span style="font-weight: 600; color: var(--text-secondary);">---</span>
+                                        <br><small style="color: var(--text-secondary);">Cursando</small>
+                                    </div>
+                                </td>
+                                <td style="padding: 1rem; text-align: center; vertical-align: middle;">
+                                    <span style="font-weight: 700; font-size: 18px; color: #8b5cf6;">89.3</span>
+                                </td>
+                                <td style="padding: 1rem; text-align: center; vertical-align: middle;">
+                                    <span class="badge" style="background: #22c55e15; color: #22c55e; padding: 8px 12px; border-radius: 20px; font-weight: 600;">
+                                        Aprovado 1º Sem
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Diagnóstico Acadêmico -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="content-card">
+            <div class="card-header">
+                <h6><i class="fas fa-stethoscope me-2"></i>Diagnóstico Acadêmico</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <!-- Situação Geral -->
+                    <div class="col-lg-4 mb-4">
+                        <div class="diagnostic-card" style="background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; padding: 24px; border-radius: 16px; height: 100%;">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fas fa-chart-pie fa-2x me-3"></i>
+                                <div>
+                                    <h5 style="margin: 0; font-weight: 700;">Situação Geral</h5>
+                                    <small style="opacity: 0.9;">1º Semestre</small>
+                                </div>
+                            </div>
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <span class="stat-value">4</span>
+                                    <span class="stat-label">Aprovados</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">1</span>
+                                    <span class="stat-label">Paralela</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-value">0</span>
+                                    <span class="stat-label">Reprovados</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Disciplinas que Precisam de Atenção -->
+                    <div class="col-lg-8 mb-4">
+                        <div class="attention-card" style="background: #fff5f5; border: 1px solid #fecaca; border-radius: 16px; padding: 24px; height: 100%;">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fas fa-exclamation-triangle" style="color: #ef4444; font-size: 24px; margin-right: 12px;"></i>
+                                <h5 style="margin: 0; font-weight: 700; color: #dc2626;">Disciplinas que Precisam de Atenção</h5>
+                            </div>
+                            
+                            <div class="attention-subject mb-3" style="background: white; border-radius: 12px; padding: 16px;">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <h6 style="color: #f59e0b; font-weight: 700; margin-bottom: 4px;">
+                                            <i class="fas fa-atom me-2"></i>Física
+                                        </h6>
+                                        <p style="color: #6b7280; margin: 0; font-size: 14px;">Média atual: 45.7 pontos</p>
+                                    </div>
+                                    <div class="text-end">
+                                        <div class="diagnosis-info">
+                                            <div class="alert alert-warning p-2 mb-2" style="border-radius: 8px; font-size: 12px;">
+                                                <strong>💡 Para passar na paralela:</strong><br>
+                                                Precisa tirar <strong>74.3 pontos</strong><br>
+                                                <small>Cálculo: (45.7 + 74.3) ÷ 2 = 60</small>
+                                            </div>
+                                            <div class="alert alert-info p-2" style="border-radius: 8px; font-size: 12px;">
+                                                <strong>📝 Se for para final:</strong><br>
+                                                Precisa tirar <strong>56.5 pontos</strong><br>
+                                                <small>Para média final ≥ 50</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="alert alert-success" style="border-radius: 12px; border: none; background: #f0fdf4;">
+                                <i class="fas fa-check-circle me-2" style="color: #16a34a;"></i>
+                                <strong style="color: #16a34a;">Boa notícia!</strong> 
+                                <span style="color: #15803d;">Suas outras 4 disciplinas estão aprovadas no 1º semestre.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Projeção para o 2º Semestre -->
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="projection-card" style="background: linear-gradient(135deg, #f0f9ff, #e0f2fe); border: 1px solid #bae6fd; border-radius: 16px; padding: 24px;">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fas fa-crystal-ball" style="color: #0284c7; font-size: 24px; margin-right: 12px;"></i>
+                                <h5 style="margin: 0; font-weight: 700; color: #0369a1;">Projeção para o 2º Semestre</h5>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="projection-item" style="text-align: center; padding: 16px;">
+                                        <div class="projection-number" style="font-size: 32px; font-weight: 700; color: #0284c7;">60</div>
+                                        <p style="color: #0369a1; margin: 0; font-weight: 600;">Média mínima por semestre</p>
+                                        <small style="color: #64748b;">Para aprovação direta</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="projection-item" style="text-align: center; padding: 16px;">
+                                        <div class="projection-number" style="font-size: 32px; font-weight: 700; color: #16a34a;">50</div>
+                                        <p style="color: #15803d; margin: 0; font-weight: 600;">Média final mínima</p>
+                                        <small style="color: #64748b;">Após prova final</small>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="projection-item" style="text-align: center; padding: 16px;">
+                                        <div class="projection-number" style="font-size: 32px; font-weight: 700; color: #dc2626;">40</div>
+                                        <p style="color: #dc2626; margin: 0; font-weight: 600;">Pontos de tolerância</p>
+                                        <small style="color: #64748b;">Diferença entre 60 e 50</small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="alert alert-info mt-3" style="border-radius: 12px; border: none; background: #f0f9ff;">
+                                <i class="fas fa-info-circle me-2" style="color: #0284c7;"></i>
+                                <strong style="color: #0369a1;">Lembre-se:</strong> 
+                                <span style="color: #0369a1;">
+                                    Na prova final, a fórmula é: (média_semestres × 6 + prova_final × 4) ÷ 10 ≥ 50
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Simulador de Média -->
+<div class="row mt-4">
+    <div class="col-lg-8">
+        <div class="simulator-controls mb-4">
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    <label class="form-label">Selecione a Disciplina:</label>
+                    <select id="disciplina-select" class="form-select" style="border-radius: 12px;">
+                        <option value="">Escolha uma disciplina</option>
+                        {% for disciplina in disciplinas %}
+                        <option value="{{ forloop.counter0 }}">{{ disciplina.nome }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+        </div>
+                
+                <div id="simulator-content" style="display: none;">
+                    <!-- Primeiro Semestre -->
+                    <div class="semester-section mb-4">
+                        <h5 class="text-primary mb-3"><i class="fas fa-calendar-check me-2"></i>1º Semestre</h5>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">1ª Avaliação:</label>
+                                <input type="number" id="nota1sem1" class="form-control nota-input" step="0.5" min="0" max="100" style="border-radius: 12px;" placeholder="0 a 100">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">2ª Avaliação:</label>
+                                <input type="number" id="nota2sem1" class="form-control nota-input" step="0.5" min="0" max="100" style="border-radius: 12px;" placeholder="0 a 100">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">3ª Avaliação:</label>
+                                <input type="number" id="nota3sem1" class="form-control nota-input" step="0.5" min="0" max="100" style="border-radius: 12px;" placeholder="0 a 100">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="alert alert-info p-3" style="border-radius: 12px;">
+                                    <strong>Média 1º Semestre: <span id="media-sem1">-</span></strong><br>
+                                    <small>Status: <span id="status-sem1">-</span></small>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3" id="paralela-sem1-container" style="display: none;">
+                                <label class="form-label">Paralela 1º Semestre:</label>
+                                <input type="number" id="paralela-sem1" class="form-control" step="0.5" min="0" max="100" style="border-radius: 12px;" placeholder="Nota da paralela">
+                                <small class="text-success">Nova média: <span id="nova-media-sem1">-</span></small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Segundo Semestre -->
+                    <div class="semester-section mb-4">
+                        <h5 class="text-primary mb-3"><i class="fas fa-calendar-check me-2"></i>2º Semestre</h5>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">1ª Avaliação:</label>
+                                <input type="number" id="nota1sem2" class="form-control nota-input" step="0.5" min="0" max="100" style="border-radius: 12px;" placeholder="0 a 100">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">2ª Avaliação:</label>
+                                <input type="number" id="nota2sem2" class="form-control nota-input" step="0.5" min="0" max="100" style="border-radius: 12px;" placeholder="0 a 100">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">3ª Avaliação:</label>
+                                <input type="number" id="nota3sem2" class="form-control nota-input" step="0.5" min="0" max="100" style="border-radius: 12px;" placeholder="0 a 100">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="alert alert-info p-3" style="border-radius: 12px;">
+                                    <strong>Média 2º Semestre: <span id="media-sem2">-</span></strong><br>
+                                    <small>Status: <span id="status-sem2">-</span></small>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3" id="paralela-sem2-container" style="display: none;">
+                                <label class="form-label">Paralela 2º Semestre:</label>
+                                <input type="number" id="paralela-sem2" class="form-control" step="0.5" min="0" max="100" style="border-radius: 12px;" placeholder="Nota da paralela">
+                                <small class="text-success">Nova média: <span id="nova-media-sem2">-</span></small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Resultado Final -->
+                    <div class="semester-section mb-4">
+                        <h5 class="text-success mb-3"><i class="fas fa-trophy me-2"></i>Resultado Final</h5>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="alert alert-warning p-3" style="border-radius: 12px;">
+                                    <strong>Média dos Semestres: <span id="media-semestres">-</span></strong><br>
+                                    <small>Status: <span id="status-final">-</span></small>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3" id="prova-final-container" style="display: none;">
+                                <label class="form-label">Prova Final:</label>
+                                <input type="number" id="prova-final" class="form-control" step="0.5" min="0" max="100" style="border-radius: 12px;" placeholder="Nota da prova final">
+                                <small class="text-primary">Média Final: <span id="media-final">-</span></small>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Dicas de Estudo -->
+                    <div id="dicas-estudo" class="mt-4" style="display: none;">
+                        <div class="alert alert-info" style="border-radius: 12px; border: none; background: #e3f2fd;">
+                            <i class="fas fa-lightbulb me-2"></i>
+                            <strong>Dica:</strong> <span id="dica-texto"></span>
+                        </div>
+                    </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="content-card">
+            <div class="card-header">
+                <h6>Melhor Disciplina</h6>
+            </div>
+            <div class="card-body text-center">
+                <div class="best-subject-icon mb-3" style="width: 80px; height: 80px; background: #8b5cf6; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                    <i class="fas fa-trophy" style="font-size: 32px; color: white;"></i>
+                </div>
+                <h5 style="font-weight: 700; color: var(--text-primary);">História</h5>
+                <p style="color: var(--text-secondary); margin-bottom: 1rem;">Prof. Pedro Lima</p>
+                <div class="score" style="background: #8b5cf6; color: white; padding: 1rem; border-radius: 12px; font-size: 24px; font-weight: 700;">
+                    89.3
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Novo Sistema de Simulação de Notas
+// Dados das disciplinas com formato de semestres
+const disciplinasData = [
+    {
+        nome: "Matemática",
+        semestre1: { notas: [85, 78, 82], media: 81.7, status: "Aprovado" },
+        semestre2: { notas: [], media: 0, status: "Cursando" }
+    },
+    {
+        nome: "Português", 
+        semestre1: { notas: [88, 80, 78], media: 82.0, status: "Aprovado" },
+        semestre2: { notas: [], media: 0, status: "Cursando" }
+    },
+    {
+        nome: "Física",
+        semestre1: { notas: [45, 42, 50], media: 45.7, status: "Paralela" },
+        semestre2: { notas: [], media: 0, status: "Cursando" }
+    },
+    {
+        nome: "Química",
+        semestre1: { notas: [72, 68, 74], media: 71.3, status: "Aprovado" },
+        semestre2: { notas: [], media: 0, status: "Cursando" }
+    },
+    {
+        nome: "História",
+        semestre1: { notas: [92, 85, 91], media: 89.3, status: "Aprovado" },
+        semestre2: { notas: [], media: 0, status: "Cursando" }
+    }
+];
+
+// Event Listeners
+document.getElementById('disciplina-select').addEventListener('change', function() {
+    const selectedIndex = this.value;
+    const simulatorContent = document.getElementById('simulator-content');
+    
+    if (selectedIndex !== '') {
+        simulatorContent.style.display = 'block';
+        limparSimulador();
+        calcularTudo();
+    } else {
+        simulatorContent.style.display = 'none';
+    }
+});
+
+// Adicionar listeners para todos os inputs
+document.addEventListener('DOMContentLoaded', function() {
+    const inputs = ['nota1sem1', 'nota2sem1', 'nota3sem1', 'paralela-sem1',
+                   'nota1sem2', 'nota2sem2', 'nota3sem2', 'paralela-sem2', 'prova-final'];
+    
+    inputs.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.addEventListener('input', calcularTudo);
+        }
+    });
+});
+
+function limparSimulador() {
+    // Limpar todos os campos
+    const inputs = ['nota1sem1', 'nota2sem1', 'nota3sem1', 'paralela-sem1',
+                   'nota1sem2', 'nota2sem2', 'nota3sem2', 'paralela-sem2', 'prova-final'];
+    
+    inputs.forEach(id => {
+        const element = document.getElementById(id);
+        if (element) element.value = '';
+    });
+    
+    // Esconder containers de paralela e prova final
+    document.getElementById('paralela-sem1-container').style.display = 'none';
+    document.getElementById('paralela-sem2-container').style.display = 'none';
+    document.getElementById('prova-final-container').style.display = 'none';
+}
+
+function calcularTudo() {
+    calcularSemestre(1);
+    calcularSemestre(2);
+    calcularResultadoFinal();
+}
+
+function calcularSemestre(semestre) {
+    const nota1 = parseFloat(document.getElementById(`nota1sem${semestre}`).value) || 0;
+    const nota2 = parseFloat(document.getElementById(`nota2sem${semestre}`).value) || 0;
+    const nota3 = parseFloat(document.getElementById(`nota3sem${semestre}`).value) || 0;
+    const paralela = parseFloat(document.getElementById(`paralela-sem${semestre}`).value) || 0;
+    
+    // Calcular média do semestre (máximo 100 pontos, dividido por 3 avaliações)
+    let mediaSemestre = (nota1 + nota2 + nota3) / 3;
+    
+    // Verificar se tem direito a paralela (abaixo de 60)
+    const temDireitoParalela = mediaSemestre < 60;
+    const paralelaContainer = document.getElementById(`paralela-sem${semestre}-container`);
+    
+    if (temDireitoParalela) {
+        paralelaContainer.style.display = 'block';
+        
+        // Se fez paralela, calcular nova média
+        if (paralela > 0) {
+            const novaMediaComParalela = (mediaSemestre + paralela) / 2;
+            // Só substitui se a nova média for maior que a original
+            if (novaMediaComParalela > mediaSemestre) {
+                mediaSemestre = novaMediaComParalela;
+            }
+            document.getElementById(`nova-media-sem${semestre}`).textContent = novaMediaComParalela.toFixed(1);
+        } else {
+            document.getElementById(`nova-media-sem${semestre}`).textContent = '-';
+        }
+    } else {
+        paralelaContainer.style.display = 'none';
+    }
+    
+    // Determinar status
+    let status = '';
+    if (nota1 === 0 && nota2 === 0 && nota3 === 0) {
+        status = 'Aguardando notas';
+    } else if (mediaSemestre >= 60) {
+        status = 'Aprovado';
+    } else if (temDireitoParalela && paralela === 0) {
+        status = 'Direito à paralela';
+    } else {
+        status = 'Reprovado no semestre';
+    }
+    
+    // Atualizar interface
+    document.getElementById(`media-sem${semestre}`).textContent = mediaSemestre.toFixed(1);
+    document.getElementById(`status-sem${semestre}`).textContent = status;
+}
+
+function calcularResultadoFinal() {
+    // Obter médias finais dos semestres (considerando paralelas se foram feitas)
+    const mediaSem1 = parseFloat(document.getElementById('media-sem1').textContent) || 0;
+    const mediaSem2 = parseFloat(document.getElementById('media-sem2').textContent) || 0;
+    
+    // Calcular média dos dois semestres
+    const mediaSemestres = (mediaSem1 + mediaSem2) / 2;
+    
+    // Determinar situação final
+    let statusFinal = '';
+    let precisaProvaFinal = false;
+    
+    if (mediaSem1 === 0 && mediaSem2 === 0) {
+        statusFinal = 'Aguardando notas';
+    } else if (mediaSemestres >= 60) {
+        statusFinal = 'Aprovado';
+    } else {
+        statusFinal = 'Prova Final';
+        precisaProvaFinal = true;
+    }
+    
+    // Mostrar/esconder container da prova final
+    const provaFinalContainer = document.getElementById('prova-final-container');
+    if (precisaProvaFinal) {
+        provaFinalContainer.style.display = 'block';
+        
+        // Calcular média final se a prova foi feita
+        const notaProvaFinal = parseFloat(document.getElementById('prova-final').value) || 0;
+        if (notaProvaFinal > 0) {
+            // Fórmula: (média_semestres * 6 + prova_final * 4) / 10
+            const mediaFinal = (mediaSemestres * 6 + notaProvaFinal * 4) / 10;
+            document.getElementById('media-final').textContent = mediaFinal.toFixed(1);
+            
+            if (mediaFinal >= 60) {
+                statusFinal = 'Aprovado na Final';
+            } else {
+                statusFinal = 'Reprovado';
+            }
+        } else {
+            document.getElementById('media-final').textContent = '-';
+        }
+    } else {
+        provaFinalContainer.style.display = 'none';
+    }
+    
+    // Atualizar interface
+    document.getElementById('media-semestres').textContent = mediaSemestres.toFixed(1);
+    document.getElementById('status-final').textContent = statusFinal;
+    
+    // Mostrar dicas
+    mostrarDicas(mediaSemestres, statusFinal, precisaProvaFinal);
+}
+
+function mostrarDicas(mediaSemestres, status, precisaProvaFinal) {
+    const dicasContainer = document.getElementById('dicas-estudo');
+    const dicaTexto = document.getElementById('dica-texto');
+    let dica = '';
+    
+    if (mediaSemestres === 0) {
+        dicaTexto.textContent = '';
+        dicasContainer.style.display = 'none';
+        return;
+    }
+    
+    if (status === 'Aprovado') {
+        dica = '🎉 Parabéns! Você foi aprovado! Continue se dedicando aos estudos.';
+    } else if (status === 'Aprovado na Final') {
+        dica = '✅ Aprovado na prova final! Foi por pouco, mas conseguiu. Parabéns!';
+    } else if (status === 'Prova Final') {
+        const notaNecessaria = ((60 * 10) - (mediaSemestres * 6)) / 4;
+        dica = `📚 Você precisa tirar pelo menos ${Math.max(0, notaNecessaria).toFixed(1)} pontos na prova final para ser aprovado.`;
+    } else if (status === 'Reprovado') {
+        dica = '😟 Infelizmente não foi desta vez. Não desanime, use esta experiência para melhorar no próximo período.';
+    }
+    
+    if (dica) {
+        dicaTexto.textContent = dica;
+        dicasContainer.style.display = 'block';
+    } else {
+        dicasContainer.style.display = 'none';
+    }
+}
+
+// Função para calcular diagnósticos em tempo real
+function calcularDiagnostico(disciplinaNome, mediaSemestre) {
+    const notaParaParalela = Math.max(0, (60 * 2) - mediaSemestre);
+    const notaParaFinal = calcularNotaNecessariaFinal(mediaSemestre);
+    
+    return {
+        disciplina: disciplinaNome,
+        mediaAtual: mediaSemestre,
+        notaParaParalela: notaParaParalela,
+        notaParaFinal: notaParaFinal,
+        situacao: mediaSemestre >= 60 ? 'Aprovado' : 'Precisa de atenção'
+    };
+}
+
+function calcularNotaNecessariaFinal(mediaSemestres) {
+    // Para média final ≥ 50: (mediaSemestres × 6 + notaFinal × 4) ÷ 10 ≥ 50
+    // Resolvendo: notaFinal ≥ (500 - mediaSemestres × 60) ÷ 40
+    const notaNecessaria = Math.max(0, (500 - mediaSemestres * 60) / 40);
+    return Math.min(100, notaNecessaria); // Máximo 100 pontos
+}
+
+// Atualizar diagnóstico quando disciplina for selecionada no simulador
+function atualizarDiagnostico() {
+    // Esta função pode ser expandida para atualizar o diagnóstico dinamicamente
+    console.log('Diagnóstico atualizado');
+}
+</script>
+
+<style>
+/* Estilos para o Diagnóstico Acadêmico */
+.diagnostic-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.diagnostic-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 16px;
+}
+
+.stat-item {
+    text-align: center;
+    background: rgba(255,255,255,0.2);
+    padding: 12px;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+}
+
+.stat-value {
+    display: block;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.stat-label {
+    display: block;
+    font-size: 12px;
+    opacity: 0.9;
+}
+
+.attention-card {
+    transition: transform 0.3s ease;
+}
+
+.attention-card:hover {
+    transform: translateY(-2px);
+}
+
+.attention-subject {
+    border-left: 4px solid #f59e0b;
+    transition: all 0.3s ease;
+}
+
+.attention-subject:hover {
+    border-left-color: #d97706;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+}
+
+.diagnosis-info .alert {
+    margin-bottom: 8px;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.projection-card {
+    background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+    transition: transform 0.3s ease;
+}
+
+.projection-card:hover {
+    transform: translateY(-2px);
+}
+
+.projection-item {
+    position: relative;
+}
+
+.projection-item::after {
+    content: '';
+    position: absolute;
+    right: -1px;
+    top: 20%;
+    bottom: 20%;
+    width: 1px;
+    background: rgba(100, 116, 139, 0.3);
+}
+
+.projection-item:last-child::after {
+    display: none;
+}
+
+.projection-number {
+    background: linear-gradient(135deg, currentColor, currentColor);
+    background-clip: text;
+    -webkit-background-clip: text;
+    position: relative;
+}
+
+/* Animações sutis */
+@keyframes pulse-warning {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+}
+
+.attention-subject {
+    animation: pulse-warning 3s infinite;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+    
+    .projection-item::after {
+        display: none;
+    }
+    
+    .diagnosis-info {
+        margin-top: 16px;
+    }
+}
+</style>
+{% endblock %}

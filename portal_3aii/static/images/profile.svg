@@ -1,0 +1,9 @@
+<!-- SVG simples para foto de perfil -->
+<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+  <!-- Círculo de fundo -->
+  <circle cx="20" cy="20" r="20" fill="#6c757d"/>
+  
+  <!-- Pessoa -->
+  <circle cx="20" cy="15" r="6" fill="white"/>
+  <path d="M 8 35 Q 8 28 20 28 Q 32 28 32 35 Z" fill="white"/>
+</svg>

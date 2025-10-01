@@ -1,0 +1,7 @@
+<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="40" height="40" rx="8" fill="white" fill-opacity="0.9"/>
+<path d="M12 12V28H16V20H20V28H24V12H20V16H16V12H12Z" fill="#6C5CE7"/>
+<path d="M26 12V28H30V20H28V16H30V12H26Z" fill="#A855F7"/>
+<path d="M32 12V28H36V20H34V16H36V12H32Z" fill="#6C5CE7"/>
+<text x="20" y="36" text-anchor="middle" font-family="Arial, sans-serif" font-size="6" font-weight="bold" fill="#6C5CE7">3AII</text>
+</svg>

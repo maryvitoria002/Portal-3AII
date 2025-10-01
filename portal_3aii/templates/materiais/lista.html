@@ -1,0 +1,717 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Materiais de Estudo - Portal 3AII{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-5">
+            <div>
+                <h1 style="font-size: 32px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px;">Materiais de Estudo</h1>
+                <p style="font-size: 16px; color: var(--text-secondary); margin: 0;">Acesse apostilas, exercícios e recursos da turma 3AII</p>
+            </div>
+            <button class="btn btn-primary" style="padding: 12px 24px; border-radius: 12px; font-weight: 600;">
+                <i class="fas fa-upload me-2"></i>Enviar Material
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Ferramentas Acadêmicas -->
+<div class="row mb-5">
+    <div class="col-12">
+        <div class="section-header mb-4">
+            <h2 style="font-size: 24px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px;">
+                <i class="fas fa-tools me-2" style="color: var(--primary-color);"></i>Ferramentas Acadêmicas
+            </h2>
+            <p style="color: var(--text-secondary); margin: 0;">Utilitários para facilitar seus estudos</p>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-5">
+    <div class="col-lg-4 mb-4">
+        <div class="utility-card" onclick="abrirGeradorABNT()">
+            <div class="utility-icon">
+                <i class="fas fa-quote-right"></i>
+            </div>
+            <h4>Gerador ABNT</h4>
+            <p>Crie referências bibliográficas no padrão ABNT automaticamente</p>
+            <div class="utility-features">
+                <span class="feature-tag"><i class="fas fa-book me-1"></i>Livros</span>
+                <span class="feature-tag"><i class="fas fa-globe me-1"></i>Sites</span>
+                <span class="feature-tag"><i class="fas fa-newspaper me-1"></i>Artigos</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4 mb-4">
+        <div class="utility-card" onclick="abrirCompressorPDF()">
+            <div class="utility-icon">
+                <i class="fas fa-compress-alt"></i>
+            </div>
+            <h4>Compressor PDF</h4>
+            <p>Reduza o tamanho dos seus arquivos PDF sem perder qualidade</p>
+            <div class="utility-features">
+                <span class="feature-tag"><i class="fas fa-file-pdf me-1"></i>PDF</span>
+                <span class="feature-tag"><i class="fas fa-compress me-1"></i>Otimizar</span>
+                <span class="feature-tag"><i class="fas fa-cloud-upload me-1"></i>Upload</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4 mb-4">
+        <div class="utility-card" onclick="abrirConversorPDF()">
+            <div class="utility-icon">
+                <i class="fas fa-exchange-alt"></i>
+            </div>
+            <h4>Conversor PDF</h4>
+            <p>Converta documentos para PDF ou PDF para outros formatos</p>
+            <div class="utility-features">
+                <span class="feature-tag"><i class="fas fa-file-word me-1"></i>DOCX</span>
+                <span class="feature-tag"><i class="fas fa-file-image me-1"></i>IMG</span>
+                <span class="feature-tag"><i class="fas fa-file-powerpoint me-1"></i>PPT</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Estatísticas -->
+<div class="row mb-5">
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stats-card">
+            <div class="stats-icon bg-primary">
+                <i class="fas fa-file-alt"></i>
+            </div>
+            <h3>{{ estatisticas.total_materiais }}</h3>
+            <p>Total de Materiais</p>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stats-card">
+            <div class="stats-icon bg-success">
+                <i class="fas fa-book"></i>
+            </div>
+            <h3>{{ estatisticas.total_disciplinas }}</h3>
+            <p>Disciplinas</p>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stats-card">
+            <div class="stats-icon bg-info">
+                <i class="fas fa-download"></i>
+            </div>
+            <h3>{{ estatisticas.total_downloads }}</h3>
+            <p>Total Downloads</p>
+        </div>
+    </div>
+    
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="stats-card">
+            <div class="stats-icon bg-warning">
+                <i class="fas fa-star"></i>
+            </div>
+            <h3>4.8</h3>
+            <p>Avaliação Média</p>
+        </div>
+    </div>
+</div>
+
+<!-- Filtros e Busca -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="content-card">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <div class="search-box position-relative">
+                            <input type="text" class="form-control" placeholder="Buscar materiais..." style="padding-right: 3rem; border-radius: 12px;">
+                            <i class="fas fa-search position-absolute" style="right: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-secondary);"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex gap-2">
+                            <select class="form-select" style="border-radius: 12px;">
+                                <option>Todas as disciplinas</option>
+                                <option>Matemática</option>
+                                <option>Física</option>
+                                <option>História</option>
+                                <option>Português</option>
+                            </select>
+                            <select class="form-select" style="border-radius: 12px;">
+                                <option>Todos os tipos</option>
+                                <option>PDF</option>
+                                <option>Vídeo</option>
+                                <option>Apresentação</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Materiais por Disciplina -->
+{% for disciplina, lista_materiais in materiais.items %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="content-card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h6 style="color: var(--primary-color);">
+                    <i class="fas fa-folder-open me-2"></i>{{ disciplina }}
+                </h6>
+                <span class="badge bg-light text-dark">{{ lista_materiais|length }} materiais</span>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% for material in lista_materiais %}
+                    <div class="col-lg-4 col-md-6 mb-3">
+                        <div class="material-card p-3" style="border: 1px solid #f1f5f9; border-radius: 12px; background: white; transition: all 0.3s ease;">
+                            <div class="d-flex align-items-start">
+                                <div class="material-icon me-3" style="width: 48px; height: 48px; background: {{ material.cor }}20; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <i class="{{ material.icone }}" style="color: {{ material.cor }}; font-size: 20px;"></i>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 style="margin: 0 0 0.5rem 0; font-weight: 600; color: var(--text-primary); font-size: 14px;">
+                                        {{ material.titulo }}
+                                    </h6>
+                                    <div class="material-meta" style="font-size: 12px; color: var(--text-secondary);">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span><i class="fas fa-file me-1"></i>{{ material.tipo }}</span>
+                                            <span><i class="fas fa-download me-1"></i>{{ material.downloads }}</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <span><i class="fas fa-weight me-1"></i>{{ material.tamanho }}</span>
+                                            <span><i class="fas fa-calendar me-1"></i>{{ material.data_upload }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="material-actions mt-2">
+                                        <button class="btn btn-sm btn-primary me-2" style="font-size: 12px; padding: 0.4rem 0.8rem;">
+                                            <i class="fas fa-download me-1"></i>Baixar
+                                        </button>
+                                        <button class="btn btn-sm btn-outline-secondary" style="font-size: 12px; padding: 0.4rem 0.8rem;">
+                                            <i class="fas fa-eye me-1"></i>Ver
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+<!-- Seção de Upload -->
+<div class="row">
+    <div class="col-12">
+        <div class="content-card">
+            <div class="card-header">
+                <h6>Enviar Novo Material</h6>
+            </div>
+            <div class="card-body">
+                <div class="upload-area text-center p-5" style="border: 2px dashed #e2e8f0; border-radius: 12px; background: #f8fafc;">
+                    <i class="fas fa-cloud-upload-alt fa-3x mb-3" style="color: var(--text-secondary);"></i>
+                    <h6 style="color: var(--text-primary);">Arraste arquivos aqui ou clique para selecionar</h6>
+                    <p style="color: var(--text-secondary); margin: 0;">Suporta PDF, DOC, PPT, MP4 até 100MB</p>
+                    <button class="btn btn-primary mt-3">
+                        <i class="fas fa-plus me-2"></i>Selecionar Arquivos
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.material-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.upload-area:hover {
+    border-color: var(--primary-color);
+    background: var(--primary-color)08;
+}
+
+/* Estilos para Ferramentas Acadêmicas */
+.utility-card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: 16px;
+    padding: 24px;
+    height: 100%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.utility-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.utility-card:hover::before {
+    opacity: 1;
+}
+
+.utility-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 20px rgba(99, 102, 241, 0.15);
+    border-color: var(--primary-color)40;
+}
+
+.utility-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.utility-icon i {
+    font-size: 24px;
+    color: white;
+}
+
+.utility-card h4 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.utility-card p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 16px;
+}
+
+.utility-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.feature-tag {
+    background: var(--primary-color)15;
+    color: var(--primary-color);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+/* Modal Styles */
+.modal-content {
+    border-radius: 16px;
+    border: none;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--border-light);
+    padding: 24px 24px 16px;
+}
+
+.modal-body {
+    padding: 24px;
+}
+
+.modal-footer {
+    border-top: 1px solid var(--border-light);
+    padding: 16px 24px 24px;
+}
+
+.form-control, .form-select {
+    border-radius: 8px;
+    border: 1px solid var(--border-light);
+    padding: 12px 16px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px var(--primary-color)20;
+}
+
+.reference-output {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: 8px;
+    padding: 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-primary);
+    white-space: pre-wrap;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.file-drop-zone {
+    border: 2px dashed var(--border-light);
+    border-radius: 12px;
+    padding: 40px;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.file-drop-zone:hover {
+    border-color: var(--primary-color);
+    background: var(--primary-color)08;
+}
+
+.file-drop-zone.dragover {
+    border-color: var(--primary-color);
+    background: var(--primary-color)15;
+}
+
+.progress {
+    height: 8px;
+    border-radius: 4px;
+    background: var(--bg-secondary);
+}
+
+.progress-bar {
+    border-radius: 4px;
+}
+</style>
+
+<!-- Modais para Ferramentas -->
+
+<!-- Modal Gerador ABNT -->
+<div class="modal fade" id="abntModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-quote-right me-2" style="color: var(--primary-color);"></i>
+                    Gerador de Referências ABNT
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="tipoReferencia" class="form-label">Tipo de Referência</label>
+                    <select class="form-select" id="tipoReferencia" onchange="mostrarCampos()">
+                        <option value="">Selecione o tipo...</option>
+                        <option value="livro">Livro</option>
+                        <option value="site">Site/Página Web</option>
+                        <option value="artigo">Artigo de Revista</option>
+                        <option value="artigo-online">Artigo Online</option>
+                    </select>
+                </div>
+                
+                <div id="camposReferencia" style="display: none;">
+                    <!-- Campos serão inseridos dinamicamente -->
+                </div>
+                
+                <div id="resultadoReferencia" style="display: none;">
+                    <h6>Referência Gerada:</h6>
+                    <div class="reference-output" id="referenciaABNT"></div>
+                    <div class="mt-3">
+                        <button class="btn btn-outline-primary" onclick="copiarReferencia()">
+                            <i class="fas fa-copy me-2"></i>Copiar
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-primary" onclick="gerarReferencia()">
+                    <i class="fas fa-magic me-2"></i>Gerar Referência
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Compressor PDF -->
+<div class="modal fade" id="compressorModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-compress-alt me-2" style="color: var(--primary-color);"></i>
+                    Compressor de PDF
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="file-drop-zone" id="pdfDropZone" onclick="document.getElementById('pdfFile').click()">
+                    <i class="fas fa-cloud-upload fa-3x mb-3" style="color: var(--text-secondary);"></i>
+                    <h5>Arraste seu PDF aqui</h5>
+                    <p class="text-muted">ou clique para selecionar</p>
+                    <input type="file" id="pdfFile" accept=".pdf" style="display: none;" onchange="processarPDF()">
+                </div>
+                
+                <div id="pdfProgress" style="display: none;" class="mt-3">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" id="progressBar"></div>
+                    </div>
+                    <small class="text-muted mt-2 d-block">Comprimindo arquivo...</small>
+                </div>
+                
+                <div id="pdfResult" style="display: none;" class="mt-3 p-3 bg-light rounded">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="mb-1">Arquivo Comprimido</h6>
+                            <small class="text-success">Redução: <span id="reducaoTamanho"></span></small>
+                        </div>
+                        <button class="btn btn-success" onclick="baixarPDFComprimido()">
+                            <i class="fas fa-download me-2"></i>Baixar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Conversor PDF -->
+<div class="modal fade" id="conversorModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-exchange-alt me-2" style="color: var(--primary-color);"></i>
+                    Conversor de Arquivos
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <label class="form-label">Converter de:</label>
+                        <select class="form-select" id="formatoOrigem">
+                            <option value="docx">DOCX → PDF</option>
+                            <option value="pptx">PPTX → PDF</option>
+                            <option value="jpg">JPG → PDF</option>
+                            <option value="png">PNG → PDF</option>
+                            <option value="pdf-docx">PDF → DOCX</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label">Para:</label>
+                        <input type="text" class="form-control" id="formatoDestino" value="PDF" readonly>
+                    </div>
+                </div>
+                
+                <div class="file-drop-zone" id="conversorDropZone" onclick="document.getElementById('conversorFile').click()">
+                    <i class="fas fa-file-upload fa-3x mb-3" style="color: var(--text-secondary);"></i>
+                    <h5>Selecione o arquivo</h5>
+                    <p class="text-muted">Formatos suportados: DOCX, PPTX, JPG, PNG, PDF</p>
+                    <input type="file" id="conversorFile" style="display: none;" onchange="processarConversao()">
+                </div>
+                
+                <div id="conversaoProgress" style="display: none;" class="mt-3">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated"></div>
+                    </div>
+                    <small class="text-muted mt-2 d-block">Convertendo arquivo...</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Funções para abrir modais
+function abrirGeradorABNT() {
+    new bootstrap.Modal(document.getElementById('abntModal')).show();
+}
+
+function abrirCompressorPDF() {
+    new bootstrap.Modal(document.getElementById('compressorModal')).show();
+}
+
+function abrirConversorPDF() {
+    new bootstrap.Modal(document.getElementById('conversorModal')).show();
+}
+
+// Gerador ABNT
+function mostrarCampos() {
+    const tipo = document.getElementById('tipoReferencia').value;
+    const container = document.getElementById('camposReferencia');
+    
+    let campos = '';
+    
+    if (tipo === 'livro') {
+        campos = `
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Autor(es) *</label>
+                    <input type="text" class="form-control" id="autor" placeholder="SOBRENOME, Nome">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Título *</label>
+                    <input type="text" class="form-control" id="titulo" placeholder="Título do livro">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Edição</label>
+                    <input type="text" class="form-control" id="edicao" placeholder="2. ed.">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Local *</label>
+                    <input type="text" class="form-control" id="local" placeholder="São Paulo">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Editora *</label>
+                    <input type="text" class="form-control" id="editora" placeholder="Nome da Editora">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Ano *</label>
+                    <input type="text" class="form-control" id="ano" placeholder="2023">
+                </div>
+            </div>
+        `;
+    } else if (tipo === 'site') {
+        campos = `
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Autor/Organização</label>
+                    <input type="text" class="form-control" id="autor" placeholder="Nome do autor ou site">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Título da Página *</label>
+                    <input type="text" class="form-control" id="titulo" placeholder="Título da página">
+                </div>
+                <div class="col-12 mb-3">
+                    <label class="form-label">URL *</label>
+                    <input type="url" class="form-control" id="url" placeholder="https://exemplo.com">
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Data de Acesso *</label>
+                    <input type="date" class="form-control" id="dataAcesso">
+                </div>
+            </div>
+        `;
+    }
+    
+    container.innerHTML = campos;
+    container.style.display = tipo ? 'block' : 'none';
+    
+    // Auto-preencher data de acesso com hoje
+    if (tipo === 'site') {
+        document.getElementById('dataAcesso').value = new Date().toISOString().split('T')[0];
+    }
+}
+
+function gerarReferencia() {
+    const tipo = document.getElementById('tipoReferencia').value;
+    let referencia = '';
+    
+    if (tipo === 'livro') {
+        const autor = document.getElementById('autor').value;
+        const titulo = document.getElementById('titulo').value;
+        const edicao = document.getElementById('edicao').value;
+        const local = document.getElementById('local').value;
+        const editora = document.getElementById('editora').value;
+        const ano = document.getElementById('ano').value;
+        
+        if (!autor || !titulo || !local || !editora || !ano) {
+            alert('Por favor, preencha todos os campos obrigatórios (*)');
+            return;
+        }
+        
+        referencia = `${autor.toUpperCase()}. **${titulo}**. ${edicao ? edicao + ' ' : ''}${local}: ${editora}, ${ano}.`;
+    } else if (tipo === 'site') {
+        const autor = document.getElementById('autor').value;
+        const titulo = document.getElementById('titulo').value;
+        const url = document.getElementById('url').value;
+        const dataAcesso = document.getElementById('dataAcesso').value;
+        
+        if (!titulo || !url || !dataAcesso) {
+            alert('Por favor, preencha todos os campos obrigatórios (*)');
+            return;
+        }
+        
+        const dataFormatada = new Date(dataAcesso).toLocaleDateString('pt-BR');
+        referencia = `${autor ? autor.toUpperCase() + '. ' : ''}**${titulo}**. Disponível em: ${url}. Acesso em: ${dataFormatada}.`;
+    }
+    
+    document.getElementById('referenciaABNT').textContent = referencia;
+    document.getElementById('resultadoReferencia').style.display = 'block';
+}
+
+function copiarReferencia() {
+    const texto = document.getElementById('referenciaABNT').textContent;
+    navigator.clipboard.writeText(texto).then(function() {
+        alert('Referência copiada para área de transferência!');
+    });
+}
+
+// Simulação de processamento de PDF
+function processarPDF() {
+    const file = document.getElementById('pdfFile').files[0];
+    if (!file) return;
+    
+    document.getElementById('pdfProgress').style.display = 'block';
+    const progressBar = document.getElementById('progressBar');
+    
+    let progress = 0;
+    const interval = setInterval(() => {
+        progress += 10;
+        progressBar.style.width = progress + '%';
+        
+        if (progress >= 100) {
+            clearInterval(interval);
+            setTimeout(() => {
+                document.getElementById('pdfProgress').style.display = 'none';
+                document.getElementById('pdfResult').style.display = 'block';
+                document.getElementById('reducaoTamanho').textContent = '65%';
+            }, 500);
+        }
+    }, 200);
+}
+
+function baixarPDFComprimido() {
+    alert('Funcionalidade de download seria implementada aqui');
+}
+
+function processarConversao() {
+    const file = document.getElementById('conversorFile').files[0];
+    if (!file) return;
+    
+    document.getElementById('conversaoProgress').style.display = 'block';
+    // Simular conversão
+    setTimeout(() => {
+        document.getElementById('conversaoProgress').style.display = 'none';
+        alert('Arquivo convertido com sucesso! (Simulação)');
+    }, 3000);
+}
+
+// Atualizar formato de destino baseado na origem
+document.getElementById('formatoOrigem').addEventListener('change', function() {
+    const formato = this.value;
+    const destino = documento.getElementById('formatoDestino');
+    
+    if (formato === 'pdf-docx') {
+        destino.value = 'DOCX';
+    } else {
+        destino.value = 'PDF';
+    }
+});
+</script>
+{% endblock %}
